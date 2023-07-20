@@ -6,7 +6,7 @@ import time
 from threading import Thread
 rev = GPIO.RPI_REVISION
 if rev == 2 or rev == 3:
-	bus = smbus.SMBus(1)
+	bus = smbus.SMBus(3) # was (1)
 else:
 	bus = smbus.SMBus(0)
 GPIO.setwarnings(False)
@@ -100,11 +100,11 @@ def temp_check():
 			temp=""
 		time.sleep(30)
 try:
-	t1 = Thread(target = shutdown_check)
+	# t1 = Thread(target = shutdown_check)
 	t2 = Thread(target = temp_check)
-	t1.start()
+	# t1.start()
 	t2.start()
 except:
-	t1.stop()
+	# t1.stop()
 	t2.stop()
 	GPIO.cleanup()
