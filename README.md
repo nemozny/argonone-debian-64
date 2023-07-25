@@ -234,7 +234,7 @@ The "waiting for edge" exception comes from the "shutdown_check" thread, so I ju
 
 &nbsp;
 
-And the end of the script you will then have  
+At the very end of the script you will then have  
 
 ```
 try:
@@ -269,7 +269,7 @@ if rev == 2 or rev == 3:
 
 My "rev" was 3, I think, so you need to change only this line. "Rev" seems to be unrelated to the "bus" number.  
 
-I will upload my script here later.  
+You can find the resulting script here.
 
 &nbsp;
 
@@ -290,7 +290,8 @@ echo "i2c-bcm2835" >> /etc/modules-load.d/modules.conf
 echo "i2c-dev" >> /etc/modules-load.d/modules.conf
 ```
 &nbsp;
-Plus above is the change to /boot/firmware/cmdline.txt.  
+Plus earlier we did a system change to /boot/firmware/cmdline.txt.  
+
 &nbsp;
 
 ## DONE!
@@ -298,4 +299,4 @@ You can test if the script is working by ie. spinning up the fan to 100% and wai
 ```
 # /usr/sbin/i2cset -y 3 0x01a 0x64  
 ```
-You might need to run the above i2cset 2x for you to hear the fan.
+You might need to run the above i2cset two times for you to actual hear the fan spin up.
