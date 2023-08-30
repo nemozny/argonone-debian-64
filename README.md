@@ -294,6 +294,22 @@ Plus earlier we did a system change to /boot/firmware/cmdline.txt.
 
 &nbsp;
 
+### MMAP 
+In case you are still getting
+```
+Traceback (most recent call last):
+  File "/usr/bin/argononed.py", line 17, in <module>
+    GPIO.setup(shutdown_pin, GPIO.IN)
+RuntimeError: Mmap of GPIO registers failed
+```
+&nbsp;
+then comment out also
+```
+# PIO.setup(shutdown_pin, GPIO.IN,  pull_up_down=GPIO.PUD_DOWN)
+```
+
+&nbsp;
+
 ## DONE!
 You can test if the script is working by ie. spinning up the fan to 100% and waiting up to 30 seconds for it to stop again.
 ```
