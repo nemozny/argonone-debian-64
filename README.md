@@ -20,21 +20,21 @@ Insert "sudo" where appropriate in this guide.
 
 #### Check you modules directory
 ```
-# cd /usr/lib/modules/<your kernel version>/kernel/drivers/i2c
-# ls & ls busses/
+$ cd /usr/lib/modules/<your kernel version>/kernel/drivers/i2c
+$ ls & ls busses/
 ```
 You will need "i2c-dev" and in my case also "i2c-bcm2835".  
 &nbsp;
 
 #### Install modprobe and i2c tools
-`# apt-get install kmod i2c-tools`
+`$ apt-get install kmod i2c-tools`
 
 &nbsp;
 
 #### Load modules
 ```
-# /usr/sbin/modprobe i2c-bcm2835
-# /usr/sbin/modprobe i2c-dev
+$ /usr/sbin/modprobe i2c-bcm2835
+$ /usr/sbin/modprobe i2c-dev
 ```   
 
 &nbsp;
@@ -42,7 +42,7 @@ You will need "i2c-dev" and in my case also "i2c-bcm2835".
 #### Now let's scan this thing
 First bus
 ```
-# /usr/sbin/i2cdetect -y 0
+$ /usr/sbin/i2cdetect -y 0
      0  1  2  3  4  5  6  7  8  9  a  b  c  d  e  f
 00:                         08 09 0a 0b 0c 0d 0e 0f
 10: 10 11 12 13 14 15 16 17 18 19 1a 1b 1c 1d 1e 1f
@@ -57,7 +57,7 @@ First bus
 
 Second bus
 ```
-# /usr/sbin/i2cdetect -y 1
+$ /usr/sbin/i2cdetect -y 1
      0  1  2  3  4  5  6  7  8  9  a  b  c  d  e  f
 00:                         08 09 0a 0b 0c 0d 0e 0f
 10: 10 11 12 13 14 15 16 17 18 19 1a 1b 1c 1d 1e 1f
@@ -72,7 +72,7 @@ Second bus
 
 Third bus
 ```
-# /usr/sbin/i2cdetect -y 2
+$ /usr/sbin/i2cdetect -y 2
      0  1  2  3  4  5  6  7  8  9  a  b  c  d  e  f
 00:                         -- -- -- -- -- -- -- --
 10: -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
@@ -87,7 +87,7 @@ Third bus
 
 Fourth bus
 ```
-# /usr/sbin/i2cdetect -y 3
+$ /usr/sbin/i2cdetect -y 3
      0  1  2  3  4  5  6  7  8  9  a  b  c  d  e  f
 00:                         -- -- -- -- -- -- -- --
 10: -- -- -- -- -- -- -- -- -- -- 1a -- -- -- -- --
@@ -102,7 +102,7 @@ Fourth bus
 
 And a fifth bus, for a good measure
 ```
-# /usr/sbin/i2cdetect -y 4
+$ /usr/sbin/i2cdetect -y 4
 Error: Could not open file '/dev/i2c-4' or '/dev/i2c/4': No such file or directory
 ```
 
@@ -119,12 +119,12 @@ You can refer to this page - https://github.com/Argon40Tech/Argon-ONE-i2c-Codes
 Now, that we know the real bus ID, we can start controlling the fan.
 &nbsp;
 ```
-# /usr/sbin/i2cset -y 3 0x01a 0x00
+$ /usr/sbin/i2cset -y 3 0x01a 0x00
 ```
 This stops the fan (0%).
 &nbsp;
 ```
-# /usr/sbin/i2cset -y 3 0x01a 0x64
+$ /usr/sbin/i2cset -y 3 0x01a 0x64
 ```
 And this sets 100%.
 This command is also useful to verify that the script is doing its job - that it will automatically change the value you have set manually.  
@@ -137,12 +137,12 @@ THE Script. Doesn't work on 64-bit as it is.
 
 #### Download the script
 ```
-# wget https://download.argon40.com/argon1.sh
+$ wget https://download.argon40.com/argon1.sh
 ```
 
 Problem is when you try and run the script  
 ```
-# bash argon1.sh
+$ bash argon1.sh
 Reading package lists... Done
 Building dependency tree... Done
 Reading state information... Done
@@ -155,7 +155,7 @@ Please also connect device to the internet and restart installation.
 Vanilla Debian doesn't have the "raspi-gpio" package as Raspberry OS has. It is called "rpi.gpio-common" instead.  
 &nbsp;
 ```
-# apt-cache search rpi.gpio
+$ apt-cache search rpi.gpio
 python3-rpi.gpio - Module to control Raspberry Pi GPIO channels (Python 3)
 rpi.gpio-common - Module to control Raspberry Pi GPIO channels (common files)
 ```
@@ -169,16 +169,16 @@ Actual work is being done by Python script called argononed.py.
 I recommend you copy the script elsewhere (your home), to conduct experiments and to replace the script to its original location later.  
 &nbsp;
 ```
-# cd
-# cp /usr/bin/argononed.py ./
-# cp argononed.py argononed_orig.py
+$ cd
+$ cp /usr/bin/argononed.py ./
+$ cp argononed.py argononed_orig.py
 ```
 
 Now that we have safely backed up the script, let's run this thing  
 &nbsp;
 
 ```
-# ./argononed.py
+$ ./argononed.py
 Traceback (most recent call last):
   File "./argononed.py", line 16, in <module>
     GPIO.setup(shutdown_pin, GPIO.IN,  pull_up_down=GPIO.PUD_DOWN)
@@ -195,8 +195,8 @@ After some (surprisingly brief) googling I found Patrick and this thread - https
 His fix indeed worked for me.  
 &nbsp;
 ```
-# cd /boot/firmware/
-# nano cmdline.txt
+$ cd /boot/firmware/
+$ nano cmdline.txt
 ```
 &nbsp;
 I added the "iomem=relaxed" argument, so that my line looked  
@@ -214,7 +214,7 @@ If you have a better fix, then please let us know.
 
 #### Test the script again
 ```
-./argononed.py
+$ ./argononed.py
 Exception in thread Thread-1 (shutdown_check):
 Traceback (most recent call last):
   File "/usr/lib/python3.11/threading.py", line 1038, in _bootstrap_inner
@@ -277,8 +277,8 @@ You can find the resulting script here.
 Now you can run the script one last time and if it is not producing any errors, you can replace it.  
 
 ```
-# cp argononed.py /usr/bin/argononed.py
-# systemctl restart argononed
+$ cp argononed.py /usr/bin/argononed.py
+$ systemctl restart argononed
 ```
 &nbsp;
 
@@ -286,8 +286,8 @@ Now you can run the script one last time and if it is not producing any errors, 
 We need to make sure that our two I2C modules are being loaded during boot  
 &nbsp;
 ```
-echo "i2c-bcm2835" >> /etc/modules-load.d/modules.conf
-echo "i2c-dev" >> /etc/modules-load.d/modules.conf
+$ echo "i2c-bcm2835" >> /etc/modules-load.d/modules.conf
+$ echo "i2c-dev" >> /etc/modules-load.d/modules.conf
 ```
 &nbsp;
 Plus earlier we did a system change to /boot/firmware/cmdline.txt.  
@@ -303,16 +303,23 @@ Traceback (most recent call last):
 RuntimeError: Mmap of GPIO registers failed
 ```
 &nbsp;
-then comment out also
+then comment out also line 15
 ```
 # PIO.setup(shutdown_pin, GPIO.IN,  pull_up_down=GPIO.PUD_DOWN)
 ```
+See an updated file in this repo.
 
 &nbsp;
 
 ## DONE!
 You can test if the script is working by ie. spinning up the fan to 100% and waiting up to 30 seconds for it to stop again.
 ```
-# /usr/sbin/i2cset -y 3 0x01a 0x64  
+$ /usr/sbin/i2cset -y 3 0x01a 0x64  
 ```
 You might need to run the above i2cset two times for you to actual hear the fan spin up.
+
+You can read your temperature by dividing the following value by 1000
+```
+$ cat /sys/class/thermal/thermal_zone0/temp
+```
+For example 37485 means 37.5 rounded degrees Celsius.
