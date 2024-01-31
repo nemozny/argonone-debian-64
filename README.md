@@ -13,7 +13,7 @@ Read this and other Raspberry Pi guides here
 For some reason none of the existing Argon One fan control scripts worked on a 64-bit OS. The reasons are beyond my comprehension, but I managed to troubleshoot the problem down to I2C.
 This guide is based on the Debian 64-bit OS, because I am familiar with Debian since Woody. But I assume the following might be applicable to Raspberry OS 64-bit as well, since it appears to be also Debian.
 
-Don't ask me any details about Raspberry Pi, I bought my first this week (I am writing this). I had some fun with Arduino and Particle Photon a long time ago, though.  
+Don't ask me any details about Raspberry Pi, I bought my first RPI this week (I am writing this on 2023/7). I had some fun with Arduino and Particle Photon a long time ago, though.  
 &nbsp;
 
 
